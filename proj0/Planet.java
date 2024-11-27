@@ -5,6 +5,7 @@
  * @Version: 1.0
  **/
 public class Planet {
+<<<<<<< Updated upstream
     public double F;
     public double Fx;
     public double Fy;
@@ -12,6 +13,15 @@ public class Planet {
     public double dy;
     public double r;
     public static final double G = 6.67e-11;
+=======
+    private double F;
+    private double Fx;
+    private double Fy;
+    private double dx;
+    private double dy;
+    private double r;
+    private static final double G = 6.67e-11;
+>>>>>>> Stashed changes
 
     // 属性
     public double xxPos;
@@ -52,7 +62,11 @@ public class Planet {
     //该方法将接收单个行星，并返回一个double
 //等于所提供的行星与进行计算的行星之间的距离
 //即返回 r
+<<<<<<< Updated upstream
     public double calDx(Planet planet) {
+=======
+    private double calDx(Planet planet) {
+>>>>>>> Stashed changes
         //规定， 向右为正方向
         // 求某个星球，对自己施加的力
         // 所以用planet.xxPos - xxPos
@@ -60,7 +74,11 @@ public class Planet {
         return dx;
     }
 
+<<<<<<< Updated upstream
     public double calDy(Planet planet) {
+=======
+    private double calDy(Planet planet) {
+>>>>>>> Stashed changes
         dy = planet.yyPos - this.yyPos;
         return dy;
     }
