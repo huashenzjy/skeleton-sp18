@@ -60,7 +60,6 @@ public class Planet {
         return dx;
     }
 
-
     private double calDy(Planet planet) {
         dy = planet.yyPos - this.yyPos;
         return dy;
