@@ -4,6 +4,32 @@ import org.junit.Test;
 
 public class IntListTest {
 
+
+    public void TestReverse() {
+        // 返回一个反向列表
+        IntList a[] = new IntList[9];
+        for (int i = 0; i < a.length; i++) {
+            if (i == a.length) {
+                a[i] = new IntList(i, null);
+            }
+            a[i] = new IntList(i, a[i + 1]);
+        }
+        reverse(a);
+    }
+    /**
+     * Returns the reverse of the given IntList.
+     * This method is destructive. If given null
+     * as an input, returns null.
+     */
+    /**
+     * 返回给定 IntList 的反向结果。
+     * 这种方法具有破坏性。如果给定 null
+     * 作为输入，则返回 null。
+     */
+    public static IntList reverse(IntList A){
+
+    }
+
     /**
      * Example test that verifies correctness of the IntList.of static
      * method. The main point of this is to convince you that
@@ -21,7 +47,7 @@ public class IntListTest {
     }
 
     @Test
-    public void testdSquareList() {
+    public void testDSquareList() {
         IntList L = IntList.of(1, 2, 3);
         IntList.dSquareList(L);
         assertEquals(IntList.of(1, 4, 9), L);
@@ -32,7 +58,7 @@ public class IntListTest {
      * lists using the handy IntList.of method.
      * <p>
      * Make sure to include test cases involving lists of various sizes
-     * on both sides of the operation. That includes the empty list, which
+     * on both sides of the operation. That includes the empty of, which
      * can be instantiated, for example, with
      * IntList empty = IntList.of().
      * <p>
@@ -65,9 +91,5 @@ public class IntListTest {
         assertEquals(exp, IntList.catenate(A, B));
         assertEquals(IntList.of(1, 2, 3), A);
     }
-
-    /** If you're running this from the command line, you'll need
-      * to add a main method. See ArithmeticTest.java for an
-      * example. */
 
 }
