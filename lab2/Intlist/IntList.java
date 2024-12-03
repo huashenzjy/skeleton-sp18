@@ -122,11 +122,13 @@ public class IntList {
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
     public static IntList catenate(IntList A, IntList B) {
+        IntList res;
+        IntList ptr;
         //TODO:  fill in method
         if (A == null) {
             if (B != null) {
-                IntList res = new IntList(B.first, null);
-                IntList ptr = res;
+                 res = new IntList(B.first, null);
+                 ptr = res;
                 B = B.rest;
                 while (B != null) {
                     ptr.rest = new IntList(B.first, null);
@@ -136,35 +138,31 @@ public class IntList {
             } else {
                 return null;
             }
-        }
-
-        IntList res = new IntList(A.first, null);
-        IntList ptr = res; // 赋值，赋的是第一个位置，也就是指针的意思
-        A = A.rest;
-        while (A != null) {
-            ptr.rest = new IntList(A.first, null);
+        } else {
+             res = new IntList(A.first, null);
+             ptr = res; // 赋值，赋的是第一个位置，也就是指针的意思
             A = A.rest;
-            ptr = ptr.rest; // 最后一个为空
-            //ptr为指针
-            if (A == null) {
-                // 检测b
-                if (B == null) {
-                    return res;
-                }
+            while (A != null) {
+                ptr.rest = new IntList(A.first, null);
+                A = A.rest;
+                ptr = ptr.rest; // 最后一个为空
+                //ptr为指针
+            }
+                    // 检测b
+                    if (B == null) {
+                        return res;
+                    }
 // 让指针可以接上b的数据
 //              直接写 B就可以， 因为链表为空，b也不存在
-                while (B != null) {
-                    ptr.rest = new IntList(B.first, null);
-                    B = B.rest;
-                    ptr = ptr.rest;
+                    while (B != null) {
+                        ptr.rest = new IntList(B.first, null);
+                        B = B.rest;
+                        ptr = ptr.rest;
+                    }
+                    //  ptr.rest = new IntList(B.)
                 }
-                //  ptr.rest = new IntList(B.)
-            }
-
-        }
-
         return res;
-    }
+}
 
 
     /**
