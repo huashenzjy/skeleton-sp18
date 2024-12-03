@@ -81,20 +81,25 @@ public class IntList {
      */
 
     // 不能使用 New
-    public static IntList dcatenate(IntList A, IntList B){
+    public static IntList dcatenate(IntList A, IntList B) {
         //TODO:  fill in method
         //将两个数组合并
         if (A == null) {
-            return null;
+            if (B != null) {
+                IntList res = B;
+                return res;
+            } else {
+                return null;
+            }
         }
 
         IntList res = A;  // 把地址赋给A了
         IntList ptr = res; // 赋值，赋的是第一个位置，也就是指针的意思
         //把指针指到最后一个
-    while (ptr.rest != null){
-        ptr = ptr.rest;
-    }
-    // rest 为空
+        while (ptr.rest != null) {
+            ptr = ptr.rest;
+        }
+        // rest 为空
         if (B == null) {
             return res;
         }
@@ -112,8 +117,6 @@ public class IntList {
     }
 
 
-
-
     /**
      * Returns a list consisting of the elements of A followed by the
      * * elements of B.  May NOT modify items of A.  Use 'new'.
@@ -121,7 +124,18 @@ public class IntList {
     public static IntList catenate(IntList A, IntList B) {
         //TODO:  fill in method
         if (A == null) {
-            return null;
+            if (B != null) {
+                IntList res = new IntList(B.first, null);
+                IntList ptr = res;
+                B = B.rest;
+                while (B != null) {
+                    ptr.rest = new IntList(B.first, null);
+                    B = B.rest;
+                    ptr = ptr.rest;
+                }
+            } else {
+                return null;
+            }
         }
 
         IntList res = new IntList(A.first, null);
