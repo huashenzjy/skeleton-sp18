@@ -5,7 +5,7 @@ import java.util.Formatter;
  * with a large number of additional methods.
  *
  * @author P. N. Hilfinger, with some modifications by Josh Hug and melaniecebula
- *         [Do not modify this file.]
+ * [Do not modify this file.]
  */
 public class IntList {
     /**
@@ -29,7 +29,7 @@ public class IntList {
      * A List with null rest, and first = 0.
      */
     public IntList() {
-    /* NOTE: public IntList () { }  would also work. */
+        /* NOTE: public IntList () { }  would also work. */
         this(0, null);
     }
 
@@ -80,10 +80,39 @@ public class IntList {
      * *  elements of B.  May modify items of A. Don't use 'new'.
      */
 
-    public static IntList dcatenate(IntList A, IntList B) {
+    // 不能使用 New
+    public static IntList dcatenate(IntList A, IntList B){
         //TODO:  fill in method
-        return null;
+        //将两个数组合并
+        if (A == null) {
+            return null;
+        }
+
+        IntList res = A;  // 把地址赋给A了
+        IntList ptr = res; // 赋值，赋的是第一个位置，也就是指针的意思
+        //把指针指到最后一个
+    while (ptr.rest != null){
+        ptr = ptr.rest;
     }
+    // rest 为空
+        if (B == null) {
+            return res;
+        }
+// 让指针可以接上b的数据
+//              直接写 B就可以， 因为链表为空，b也不存在
+
+        ptr.rest = B;
+//        while (B != null) {
+//            ptr.rest = B;
+//            B = B.rest;
+//            ptr = ptr.rest;
+//        }
+
+        return res;
+    }
+
+
+
 
     /**
      * Returns a list consisting of the elements of A followed by the
@@ -91,22 +120,37 @@ public class IntList {
      */
     public static IntList catenate(IntList A, IntList B) {
         //TODO:  fill in method
-        return null;
+        if (A == null) {
+            return null;
+        }
+
+        IntList res = new IntList(A.first, null);
+        IntList ptr = res; // 赋值，赋的是第一个位置，也就是指针的意思
+        A = A.rest;
+        while (A != null) {
+            ptr.rest = new IntList(A.first, null);
+            A = A.rest;
+            ptr = ptr.rest; // 最后一个为空
+            //ptr为指针
+            if (A == null) {
+                // 检测b
+                if (B == null) {
+                    return res;
+                }
+// 让指针可以接上b的数据
+//              直接写 B就可以， 因为链表为空，b也不存在
+                while (B != null) {
+                    ptr.rest = new IntList(B.first, null);
+                    B = B.rest;
+                    ptr = ptr.rest;
+                }
+                //  ptr.rest = new IntList(B.)
+            }
+
+        }
+
+        return res;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     /**
@@ -208,9 +252,8 @@ public class IntList {
     }
 
     @Override
-    /** Outputs the IntList as a String. You are not expected to read
-     * or understand this method. */
-    public String toString() {
+/** Outputs the IntList as a String. You are not expected to read
+ * or understand this method. */ public String toString() {
         Formatter out = new Formatter();
         String sep;
         sep = "(";
