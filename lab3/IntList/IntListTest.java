@@ -4,32 +4,6 @@ import org.junit.Test;
 
 public class IntListTest {
 
-
-    public void TestReverse() {
-        // 返回一个反向列表
-        IntList a[] = new IntList[9];
-        for (int i = 0; i < a.length; i++) {
-            if (i == a.length) {
-                a[i] = new IntList(i, null);
-            }
-            a[i] = new IntList(i, a[i + 1]);
-        }
-        reverse(a);
-    }
-    /**
-     * Returns the reverse of the given IntList.
-     * This method is destructive. If given null
-     * as an input, returns null.
-     */
-    /**
-     * 返回给定 IntList 的反向结果。
-     * 这种方法具有破坏性。如果给定 null
-     * 作为输入，则返回 null。
-     */
-    public static IntList reverse(IntList A){
-
-    }
-
     /**
      * Example test that verifies correctness of the IntList.of static
      * method. The main point of this is to convince you that
@@ -47,7 +21,7 @@ public class IntListTest {
     }
 
     @Test
-    public void testDSquareList() {
+    public void testdSquareList() {
         IntList L = IntList.of(1, 2, 3);
         IntList.dSquareList(L);
         assertEquals(IntList.of(1, 4, 9), L);
@@ -92,4 +66,18 @@ public class IntListTest {
         assertEquals(IntList.of(1, 2, 3), A);
     }
 
+    @Test
+    public void TestReverse() {
+        IntList a = IntList.of(1, 2, 3, 4, 5);
+        IntList expected = IntList.of(5, 4, 3, 2, 1);
+        IntList exp2 = new IntList() ;
+        IntList nullIntList = new IntList();
+        IntList reverse = IntList.reverse(a);
+        assertEquals(expected, reverse);
+        assertNotEquals(expected, a);
+        // 测试空输入
+      //  IntList reverse1 = IntList.reverse(nullIntList);
+        assertEquals(exp2,IntList.reverse(nullIntList));
+
+    }
 }

@@ -5,7 +5,7 @@ import java.util.Formatter;
  * with a large number of additional methods.
  *
  * @author P. N. Hilfinger, with some modifications by Josh Hug and melaniecebula
- *         [Do not modify this file.]
+ * [Do not modify this file.]
  */
 public class IntList {
     /**
@@ -29,7 +29,7 @@ public class IntList {
      * A List with null rest, and first = 0.
      */
     public IntList() {
-    /* NOTE: public IntList () { }  would also work. */
+        /* NOTE: public IntList () { }  would also work. */
         this(0, null);
     }
 
@@ -80,35 +80,107 @@ public class IntList {
      * *  elements of B.  May modify items of A. Don't use 'new'.
      */
 
+    // 不能使用 New
     public static IntList dcatenate(IntList A, IntList B) {
         //TODO:  fill in method
-        return null;
+        //将两个数组合并
+        if (A == null) {
+            if (B != null) {
+                IntList res = B;
+                return res;
+            } else {
+                return null;
+            }
+        }
+
+        IntList ptr = A;  // 把地址赋给A了
+        //把指针指到最后一个
+        while (ptr.rest != null) {
+            ptr = ptr.rest;
+        }
+        // rest 为空
+
+// 让指针可以接上b的数据
+//              直接写 B就可以， 因为链表为空，b也不存在
+        if (B != null) {
+            ptr.rest = B;
+        }
+//        while (B != null) {
+//            ptr.rest = B;
+//            B = B.rest;
+//            ptr = ptr.rest;
+//        }
+        return A;
     }
+
 
     /**
      * Returns a list consisting of the elements of A followed by the
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
     public static IntList catenate(IntList A, IntList B) {
+        IntList res;
+        IntList ptr;
         //TODO:  fill in method
-        return null;
+        if (A == null) {
+            if (B != null) {
+                res = new IntList(B.first, null);
+                ptr = res;
+                B = B.rest;
+                while (B != null) {
+                    ptr.rest = new IntList(B.first, null);
+                    B = B.rest;
+                    ptr = ptr.rest;
+                }
+            } else {
+                return null;
+            }
+        } else {
+            res = new IntList(A.first, null);
+            ptr = res; // 赋值，赋的是第一个位置，也就是指针的意思
+            A = A.rest;
+            while (A != null) {
+                ptr.rest = new IntList(A.first, null);
+                A = A.rest;
+                ptr = ptr.rest; // 最后一个为空
+                //ptr为指针
+            }
+            // 检测b
+            if (B == null) {
+                return res;
+            }
+// 让指针可以接上b的数据
+//              直接写 B就可以， 因为链表为空，b也不存在
+            while (B != null) {
+                ptr.rest = new IntList(B.first, null);
+                B = B.rest;
+                ptr = ptr.rest;
+            }
+            //  ptr.rest = new IntList(B.)
+        }
+        return res;
     }
 
-public IntList reverse (){
-        return null;
-}
 
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * Returns the reverse of the given IntList.
+     * This method is destructive. If given null
+     * as an input, returns null.
+     */
+    // 返回一个反向链表
+    public static IntList reverse(IntList head) {
+        IntList prev = null;
+        // 第一次的前节点为空
+        IntList current = head;
+        while (current != null) {
+            IntList nextTemp = current.rest;
+            current.rest = prev; // 指向前一个;
+            // 迭代
+            prev = current;
+            current = nextTemp;
+        }
+        return prev;  // 返回头节点
+    }
 
 
     /**
@@ -210,9 +282,8 @@ public IntList reverse (){
     }
 
     @Override
-    /** Outputs the IntList as a String. You are not expected to read
-     * or understand this method. */
-    public String toString() {
+/** Outputs the IntList as a String. You are not expected to read
+ * or understand this method. */ public String toString() {
         Formatter out = new Formatter();
         String sep;
         sep = "(";
