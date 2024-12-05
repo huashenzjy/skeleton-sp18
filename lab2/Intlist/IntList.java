@@ -93,27 +93,24 @@ public class IntList {
             }
         }
 
-        IntList res = A;  // 把地址赋给A了
-        IntList ptr = res; // 赋值，赋的是第一个位置，也就是指针的意思
+        IntList ptr = A;  // 把地址赋给A了
         //把指针指到最后一个
         while (ptr.rest != null) {
             ptr = ptr.rest;
         }
         // rest 为空
-        if (B == null) {
-            return res;
-        }
+
 // 让指针可以接上b的数据
 //              直接写 B就可以， 因为链表为空，b也不存在
-
-        ptr.rest = B;
+        if (B != null) {
+            ptr.rest = B;
+        }
 //        while (B != null) {
 //            ptr.rest = B;
 //            B = B.rest;
 //            ptr = ptr.rest;
 //        }
-
-        return res;
+        return A;
     }
 
 
@@ -127,8 +124,8 @@ public class IntList {
         //TODO:  fill in method
         if (A == null) {
             if (B != null) {
-                 res = new IntList(B.first, null);
-                 ptr = res;
+                res = new IntList(B.first, null);
+                ptr = res;
                 B = B.rest;
                 while (B != null) {
                     ptr.rest = new IntList(B.first, null);
@@ -139,8 +136,8 @@ public class IntList {
                 return null;
             }
         } else {
-             res = new IntList(A.first, null);
-             ptr = res; // 赋值，赋的是第一个位置，也就是指针的意思
+            res = new IntList(A.first, null);
+            ptr = res; // 赋值，赋的是第一个位置，也就是指针的意思
             A = A.rest;
             while (A != null) {
                 ptr.rest = new IntList(A.first, null);
@@ -148,21 +145,21 @@ public class IntList {
                 ptr = ptr.rest; // 最后一个为空
                 //ptr为指针
             }
-                    // 检测b
-                    if (B == null) {
-                        return res;
-                    }
+            // 检测b
+            if (B == null) {
+                return res;
+            }
 // 让指针可以接上b的数据
 //              直接写 B就可以， 因为链表为空，b也不存在
-                    while (B != null) {
-                        ptr.rest = new IntList(B.first, null);
-                        B = B.rest;
-                        ptr = ptr.rest;
-                    }
-                    //  ptr.rest = new IntList(B.)
-                }
+            while (B != null) {
+                ptr.rest = new IntList(B.first, null);
+                B = B.rest;
+                ptr = ptr.rest;
+            }
+            //  ptr.rest = new IntList(B.)
+        }
         return res;
-}
+    }
 
 
     /**

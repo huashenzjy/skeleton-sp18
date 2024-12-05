@@ -70,70 +70,81 @@ public class LinkedListDeque<T> {
         }
     }
 
-    public T removeFirst()
     // Removes and returns the item at the front of the deque.
     // If no such item exists, returns null.
-    {
-        // 判断不为空
-        if (frontSentinel.next != backSentinel) {
-            // 如果只有一个结点的时候， 会返回null，出现异常
-            IntNode beRemoved = frontSentinel.next;
-            IntNode nextTemp = beRemoved.next;
-            // 进行删除
-            beRemoved.next = null;
-            beRemoved.prev = null;
-            // 接上链表
-            // 判断是不是列表中 只有一个节点
-            if (nextTemp != backSentinel) {
-                nextTemp.prev = frontSentinel;
-                frontSentinel.next = nextTemp;
-                T item1 = (T) nextTemp.item;
-                size -= 1;
-                return item1;
-            }
+    public T removeFirst() {
+        // 判断不为空,证明存在至少一个节点，删除后返回这个节点
+        if (frontSentinel.next == backSentinel) {
+            return null;
         }
+        // 如果只有一个结点的时候， 会返回null，出现异常
+        IntNode beRemoved = frontSentinel.next;
+        T item = (T) beRemoved.item;
+        IntNode nextTemp = beRemoved.next;
+        // 好像应该先更新指针
+        frontSentinel.next = nextTemp;
+        nextTemp.prev = frontSentinel;
+        // 进行删除
+        beRemoved.next = null;
+        beRemoved.prev = null;
+        // 接上链表
+        // 判断是不是列表中 只有一个节点
+//        if (nextTemp != backSentinel) {
+//            nextTemp.prev = frontSentinel;
+//            frontSentinel.next = nextTemp;
+//            T item1 = (T) nextTemp.item;
+//            size -= 1;
+//            return item1;
         size -= 1;
-        return null;
+        return item;
     }
 
-    public T removeLast()
     //: Removes and returns the item at the back of the deque.
-    // If no such item exists, returns null.
-    {
-        // 判断不为空
-        if (frontSentinel.next != backSentinel) {
-            // 保存地址
-            IntNode beRemoved = backSentinel.prev;
-            IntNode prevTemp = beRemoved.prev;
-            // 进行删除
-            beRemoved.next = null;
-            beRemoved.prev = null;
-            // 接上链表
-            prevTemp.next = backSentinel;
-            backSentinel.prev = prevTemp;
-            T item1 = (T) prevTemp.item;
-            return item1;
+// If no such item exists, returns null.
+    public T removeLast() {
+        // 判断不为空,证明存在至少一个节点，删除后返回这个节点
+        if (frontSentinel.next == backSentinel) {
+            return null;
         }
-        return null;
+        // 如果只有一个结点的时候， 会返回null，出现异常
+        IntNode beRemoved = backSentinel.prev;
+        T item = (T) beRemoved.item;
+        IntNode nextTemp = beRemoved.next;
+        // 好像应该先更新指针
+        frontSentinel.next = nextTemp;
+        nextTemp.prev = frontSentinel;
+        // 进行删除
+        beRemoved.next = null;
+        beRemoved.prev = null;
+        // 接上链表
+        // 判断是不是列表中 只有一个节点
+//        if (nextTemp != backSentinel) {
+//            nextTemp.prev = frontSentinel;
+//            frontSentinel.next = nextTemp;
+//            T item1 = (T) nextTemp.item;
+//            size -= 1;
+//            return item1;
+        size -= 1;
+        return item;
     }
 
     public T get(int index)
-    // 使用迭代
-    // Gets the item at the given index,
-    // where 0 is the front, 1 is the next item, and so forth.
-    // If no such item exists, returns null. Must not alter the deque! // 不能改变链表
+// 使用迭代
+// Gets the item at the given index,
+// where 0 is the front, 1 is the next item, and so forth.
+// If no such item exists, returns null. Must not alter the deque! // 不能改变链表
     {
         if (index < 0 || index >= size) {
-            IntNode ptr = frontSentinel.next;
-            // 除去哨兵节点
-            int searchIndex = 0;
-            while (searchIndex != index) {
-                ptr = ptr.next;
-                searchIndex++;
-            }
-            return (T) ptr.item;
+            return null;
         }
-        return null;
+        IntNode ptr = frontSentinel.next;
+        // 除去哨兵节点
+        int searchIndex = 0;
+        while (searchIndex != index) {
+            ptr = ptr.next;
+            searchIndex++;
+        }
+        return (T) ptr.item;
     }
 
 }

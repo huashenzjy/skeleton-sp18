@@ -23,8 +23,9 @@ public class ArrayDeque<T> {
 
     private T[] items;
     private int size; // 真实项数
-    private int nextFirst; // 这个也是指针， 指的是下标
-    private int nextLast;
+    private int nextFirst; // nextFirst 指向的是下一个插入到队列头部的位置，
+    // 指的是下标
+    private int nextLast;//指向的是下一个插入到队列尾部的位置
     private int natural; // 假设起始点 为下标四
     private final int expansionFactor = 2;
     private double smallFactor = 0.5;
@@ -58,14 +59,14 @@ public class ArrayDeque<T> {
         如果 a 等于 b，则 a % b 等于 0。
         如果 a 大于 b，则 a % b 等于 a 减去 b 的最大整数倍后剩余的部分。
 */
-        nextFirst = (nextFirst - 1) & items.length;
-        size+=1;
+        nextFirst = (nextFirst - 1) % items.length;
+        size += 1;
     }
 
     //      Adds an item of type T to the back of the deque.
     public void addLast(T t) {
         if (size == items.length) {
-            resize();
+            resize(); // 在添加前调用， 保证有足够的空间，新数据可以放进去
         }
         items[nextLast] = t;
         // 只用下标便是指针
@@ -77,66 +78,66 @@ public class ArrayDeque<T> {
         如果 a 等于 b，则 a % b 等于 0。
         如果 a 大于 b，则 a % b 等于 a 减去 b 的最大整数倍后剩余的部分。
 */
-        nextLast = (nextLast + 1) & items.length;
-        size++;
+        nextLast = (nextLast + 1) % items.length;
+        size += 1;
     }
 
-    public boolean isEmpty()
     //: Returns true if deque is empty, false otherwise.
-    {
+    public boolean isEmpty() {
         return size == 0;
     }
 
-    public int size()
     //: Returns the number of items in the deque.
-    {
+    public int size() {
         return size;
     }
 
-    public void printDeque()
     //: Prints the items in the deque from first to last, separated by a space.
-    {
+    public void printDeque() {
         for (T item : items) {
             System.out.print(item + " ");
         }
     }
 
-    public T removeFirst()
     // Removes and returns the item at the front of the deque.
     // If no such item exists, returns null.
-    {   // 删除前端
+    public T removeFirst() {   // 删除前端
         if (size != 0) {
             int front = nextFirst + 1;
             T item = items[front];
             items[front] = null;
             nextFirst -= 1;
+            // 检查数组是否需要缩容
+            if (size > 0 && size / items.length <= 0.25) {
+                resize();
+            }
             return item;
         }
         return null;
     }
 
-    public T removeLast()
     //: Removes and returns   the item at the back of the deque.
     // If no such item exists, returns null.
     // 意思就是删除队列的后端  并 返回
-    {
-
+    public T removeLast() {
         if (size != 0) {
             T t;
             t = items[nextLast - 1];
             // 删除
             items[nextLast - 1] = null;
             nextLast = (nextLast - 1) & items.length;
+            // 检查数组是否需要缩容
+            if (size > 0 && size / items.length <= 0.25) {
+                resize();
+            }
             return t;
         }
         return null;
     }
 
-    public T get(int index)
-        // Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
-        // If no such item exists, returns null. Must not alter the deque!
+    // Gets the item at the given index, where 0 is the front, 1 is the next item, and so forth.
+    // If no such item exists, returns null. Must not alter the deque!
    /*
-
 front + index:
 front 是队列前端在数组中的位置。
 index 是从队列前端开始的顺序索引。
@@ -144,29 +145,39 @@ front + index 计算出从 front 开始的第 index 个位置在数组中的相�
 % items.length:
 % items.length 是取模运算，确保 actualIndex 始终在数组的有效范围内（即 0 到 items.length - 1）。
 如果 front + index 超过了数组的长度，取模运算会将其“循环”回数组的开头
-   */ {// 列出失败条件
+   */
+    public T get(int index) {
+        // 列出失败条件
         if (!(index < 0 || index >= items.length)) {
             // 求出队列的前端
-            int front = nextFirst + 1;
-            int actualIndex = (front + index) & items.length;
+            int front = (nextFirst + 1) % items.length;
+// 其实就是使得无论 nF指针指在哪个位置， 通过这样的方法 ，循环求出前端
+// 实际上指向的是当前队列的第一个元素的位置。我们可以通过 (nextFirst + 1) % items.length
+//来确保这个索引在数组的有效范围内
+            int actualIndex = (front + index) % items.length;
             return items[actualIndex];
         }
         return null;
     }
 
-    public void resize() {
+    private void resize() {
 /* 对于长度为16或更大的数组，使用率（即数组中实际存储的元素数量与数组长度的比例）应该至少为25%。
 对于较小的数组，使用率可以任意低。
 */
+
+        // int newCapacity = size == items.length ? items.length * expansionFactor
         // 扩容
         if (size == items.length) {
-            T[] newArray = (T[]) new Object[items.length * expansionFactor];
+            int newCapacity = items.length * expansionFactor;
+            T[] newArray = (T[]) new Object[newCapacity];
             System.arraycopy(items, 0, newArray, 0, items.length);
             items = newArray;
         }
         // 缩容
-        if (size / items.length <= 0.25){
-            T[] newArray = (T[]) new Object[(int)(items.length * smallFactor)];
+        // 将size 转为double 类型
+        if (size > 0 && (double) size / items.length <= 0.25) {
+            int newCapacity = (int) (items.length * smallFactor);
+            T[] newArray = (T[]) new Object[newCapacity];
             System.arraycopy(items, 0, newArray, 0, items.length);
             items = newArray;
         }
