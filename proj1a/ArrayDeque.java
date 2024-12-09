@@ -160,26 +160,68 @@ front + index 计算出从 front 开始的第 index 个位置在数组中的相�
         return null;
     }
 
-    private void resize() {
-/* 对于长度为16或更大的数组，使用率（即数组中实际存储的元素数量与数组长度的比例）应该至少为25%。
-对于较小的数组，使用率可以任意低。
-*/
+    //    private void resize() {
+///* 对于长度为16或更大的数组，使用率（即数组中实际存储的元素数量与数组长度的比例）应该至少为25%。
+//对于较小的数组，使用率可以任意低。
+//*/
+//
+//        // int newCapacity = size == items.length ? items.length * expansionFactor
+//        // 扩容
+//        if (size == items.length) {
+//            int newCapacity = items.length * expansionFactor;
+//            T[] newArray = (T[]) new Object[newCapacity];
+//            System.arraycopy(items, 0, newArray, 0, items.length);
+//            items = newArray;
+//        }
+//        // 缩容
+//        // 将size 转为double 类型
+//        if (size > 0 && (double) size / items.length <= 0.25) {
+//            int newCapacity = (int) (items.length * smallFactor);
+//            T[] newArray = (T[]) new Object[newCapacity];
+//            System.arraycopy(items, 0, newArray, 0, items.length);
+//            items = newArray;
+//        }
+//    }
 
-        // int newCapacity = size == items.length ? items.length * expansionFactor
+    private void resize() {
         // 扩容
         if (size == items.length) {
-            int newCapacity = items.length * expansionFactor;
-            T[] newArray = (T[]) new Object[newCapacity];
-            System.arraycopy(items, 0, newArray, 0, items.length);
-            items = newArray;
+            int newCapacity = items.length * 2;
+            T[] newItems = (T[]) new Object[newCapacity];
+
+            int startIndex = newCapacity / 4; // 开始的下标
+            for (int i = 0; i < size; i++) {
+                // 取模运算，下标不会出界
+                newItems[startIndex + i] = items[(nextFirst + 1 + i) % items.length];
+            }
+            //System.arraycopy 中，复制的元素数量是 items.length，即旧数组的总长度，
+            // 这可能会导致复制多余的 null 元素或超出数组边界。
+            //需要注意的是 System.arraycopy 是连续复制的，
+            //而这里的复制涉及到环形数组的处理，因此需要分两次复制来处理环形数组的情况。
+            // System.arraycopy(items, ((nextFirst + 1 ) % items.length), newItems, startIndex , size);
+            items = newItems;
+            nextFirst = startIndex - 1;
+            nextLast = startIndex + size;
         }
         // 缩容
         // 将size 转为double 类型
         if (size > 0 && (double) size / items.length <= 0.25) {
-            int newCapacity = (int) (items.length * smallFactor);
-            T[] newArray = (T[]) new Object[newCapacity];
-            System.arraycopy(items, 0, newArray, 0, items.length);
-            items = newArray;
+         int newCapacity = (int) (items.length * smallFactor);
+            T[] newItems = (T[]) new Object[newCapacity];
+
+            int startIndex = newCapacity / 4; // 开始的下标
+            for (int i = 0; i < size; i++) {
+                // 取模运算，下标不会出界
+                newItems[startIndex + i] = items[(nextFirst + 1 + i) % items.length];
+            }
+            //System.arraycopy 中，复制的元素数量是 items.length，即旧数组的总长度，
+            // 这可能会导致复制多余的 null 元素或超出数组边界。
+            //需要注意的是 System.arraycopy 是连续复制的，
+            //而这里的复制涉及到环形数组的处理，因此需要分两次复制来处理环形数组的情况。
+            // System.arraycopy(items, ((nextFirst + 1 ) % items.length), newItems, startIndex , size);
+            items = newItems;
+            nextFirst = startIndex - 1;
+            nextLast = startIndex + size;
         }
     }
 }
