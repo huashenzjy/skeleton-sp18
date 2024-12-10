@@ -21,11 +21,11 @@ public class ArrayDeque<T> {
     //The position of the last item in the list is always size - 1.
     //列表中最后一项的位置始终为 size - 1。
 
-    T[] items;
+    private T[] items;
     private int size; // 真实项数
-    int nextFirst; // nextFirst 指向的是下一个插入到队列头部的位置，
+    private int nextFirst; // nextFirst 指向的是下一个插入到队列头部的位置，
     // 指的是下标
-    int nextLast;//指向的是下一个插入到队列尾部的位置
+    private int nextLast;//指向的是下一个插入到队列尾部的位置
     private int natural; // 假设起始点 为下标四
     private final int expansionFactor = 2;
     private double smallFactor = 0.5;
@@ -137,7 +137,8 @@ public class ArrayDeque<T> {
         if (size != 0) {
             T t;
             // 保证下标不会变成负数
-            int last =  (nextLast - 1 + items.length) % items.length;;
+            int last = (nextLast - 1 + items.length) % items.length;
+            ;
             t = items[last];
             // 删除
             items[last] = null;
