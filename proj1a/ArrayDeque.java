@@ -21,11 +21,11 @@ public class ArrayDeque<T> {
     //The position of the last item in the list is always size - 1.
     //列表中最后一项的位置始终为 size - 1。
 
-    private T[] items;
+    T[] items;
     private int size; // 真实项数
-    private int nextFirst; // nextFirst 指向的是下一个插入到队列头部的位置，
+    int nextFirst; // nextFirst 指向的是下一个插入到队列头部的位置，
     // 指的是下标
-    private int nextLast;//指向的是下一个插入到队列尾部的位置
+    int nextLast;//指向的是下一个插入到队列尾部的位置
     private int natural; // 假设起始点 为下标四
     private final int expansionFactor = 2;
     private double smallFactor = 0.5;
@@ -33,13 +33,21 @@ public class ArrayDeque<T> {
     // 数组的起始大小应为 8。
 
 
+//    public ArrayDeque() {
+//        // 创建一个8 位置的数组
+//        items = (T[]) new Object[8]; // T 是类型参数
+//        // 加上初始化，nF是在4的位置
+//        // 假设起始点 为下标四
+//        size = 0;
+//        natural = 4;
+//        nextFirst = 4;
+//        nextLast = 5;
+//    }
+
+    @SuppressWarnings("unchecked")
     public ArrayDeque() {
-        // 创建一个8 位置的数组
-        items = (T[]) new Object[8]; // T 是类型参数
-        // 加上初始化，nF是在4的位置
-        // 假设起始点 为下标四
+        items = (T[]) new Object[8]; // 使用泛型数组创建技巧
         size = 0;
-        natural = 4;
         nextFirst = 4;
         nextLast = 5;
     }
@@ -49,6 +57,7 @@ public class ArrayDeque<T> {
         if (size == items.length) {
             resize();
         }
+
         items[nextFirst] = t;
         // 只用下标便是指针
         // nextLast - 1 示意 为上一个位置
@@ -59,8 +68,14 @@ public class ArrayDeque<T> {
         如果 a 等于 b，则 a % b 等于 0。
         如果 a 大于 b，则 a % b 等于 a 减去 b 的最大整数倍后剩余的部分。
 */
-        nextFirst = (nextFirst - 1) % items.length;
-        size += 1;
+        // 需要判断 nextFirst - 1，这个下标是否为正数
+        if (nextFirst - 1 >= 0) {
+            nextFirst = ((nextFirst - 1) % items.length);
+            size += 1;
+        } else {
+            nextFirst = (nextFirst - 1 + items.length) % items.length; // 修正此处
+            size += 1;
+        }
     }
 
     //      Adds an item of type T to the back of the deque.
@@ -78,9 +93,10 @@ public class ArrayDeque<T> {
         如果 a 等于 b，则 a % b 等于 0。
         如果 a 大于 b，则 a % b 等于 a 减去 b 的最大整数倍后剩余的部分。
 */
-        nextLast = (nextLast + 1) % items.length;
+        nextLast = ((nextLast + 1) % items.length);
         size += 1;
     }
+
 
     //: Returns true if deque is empty, false otherwise.
     public boolean isEmpty() {
@@ -106,9 +122,11 @@ public class ArrayDeque<T> {
             int front = nextFirst + 1;
             T item = items[front];
             items[front] = null;
-            nextFirst -= 1;
+
+            nextFirst = ((front + 1) % items.length);
+            size -= 1;
             // 检查数组是否需要缩容
-            if (size > 0 && size / items.length <= 0.25) {
+            if (size > 0 && (double) size / items.length <= 0.25) {
                 resize();
             }
             return item;
@@ -125,9 +143,16 @@ public class ArrayDeque<T> {
             t = items[nextLast - 1];
             // 删除
             items[nextLast - 1] = null;
-            nextLast = (nextLast - 1) & items.length;
+            // nextLast = (nextLast - 1) & items.length;
+            if (nextLast - 1 >= 0) {
+                nextLast = ((nextLast - 1) % items.length);
+                size -= 1;
+            } else {
+                nextLast = (nextLast - 1 + items.length) % items.length; // 修正此处
+                size -= 1;
+            }
             // 检查数组是否需要缩容
-            if (size > 0 && size / items.length <= 0.25) {
+            if (size > 0 && (double) size / items.length <= 0.25) {
                 resize();
             }
             return t;
@@ -206,7 +231,7 @@ front + index 计算出从 front 开始的第 index 个位置在数组中的相�
         // 缩容
         // 将size 转为double 类型
         if (size > 0 && (double) size / items.length <= 0.25) {
-         int newCapacity = (int) (items.length * smallFactor);
+            int newCapacity = (int) (items.length * smallFactor);
             T[] newItems = (T[]) new Object[newCapacity];
 
             int startIndex = newCapacity / 4; // 开始的下标
