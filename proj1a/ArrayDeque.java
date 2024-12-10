@@ -69,13 +69,8 @@ public class ArrayDeque<T> {
         如果 a 大于 b，则 a % b 等于 a 减去 b 的最大整数倍后剩余的部分。
 */
         // 需要判断 nextFirst - 1，这个下标是否为正数
-        if (nextFirst - 1 >= 0) {
-            nextFirst = ((nextFirst - 1) % items.length);
-            size += 1;
-        } else {
-            nextFirst = (nextFirst - 1 + items.length) % items.length; // 修正此处
-            size += 1;
-        }
+        nextFirst = (nextFirst - 1 + items.length) % items.length;
+        // 如果是正数， 加上length也是本身，没有影响，负数则是循环到了 数组末尾
     }
 
     //      Adds an item of type T to the back of the deque.
@@ -119,11 +114,11 @@ public class ArrayDeque<T> {
     // If no such item exists, returns null.
     public T removeFirst() {   // 删除前端
         if (size != 0) {
-            int front = nextFirst + 1;
+            int front = (nextFirst + 1) % items.length;
             T item = items[front];
             items[front] = null;
-
-            nextFirst = ((front + 1) % items.length);
+// 直接就等于原来前端的位置
+            nextFirst = front;
             size -= 1;
             // 检查数组是否需要缩容
             if (size > 0 && (double) size / items.length <= 0.25) {
@@ -140,17 +135,13 @@ public class ArrayDeque<T> {
     public T removeLast() {
         if (size != 0) {
             T t;
-            t = items[nextLast - 1];
+            int last = nextLast -1 ;
+            t = items[last];
             // 删除
             items[nextLast - 1] = null;
-            // nextLast = (nextLast - 1) & items.length;
-            if (nextLast - 1 >= 0) {
-                nextLast = ((nextLast - 1) % items.length);
-                size -= 1;
-            } else {
-                nextLast = (nextLast - 1 + items.length) % items.length; // 修正此处
-                size -= 1;
-            }
+            // 指针前移
+            nextLast = last;
+            size -=1 ;
             // 检查数组是否需要缩容
             if (size > 0 && (double) size / items.length <= 0.25) {
                 resize();
