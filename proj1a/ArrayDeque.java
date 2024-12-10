@@ -71,6 +71,7 @@ public class ArrayDeque<T> {
         // 需要判断 nextFirst - 1，这个下标是否为正数
         nextFirst = (nextFirst - 1 + items.length) % items.length;
         // 如果是正数， 加上length也是本身，没有影响，负数则是循环到了 数组末尾
+        size += 1;
     }
 
     //      Adds an item of type T to the back of the deque.
@@ -135,13 +136,14 @@ public class ArrayDeque<T> {
     public T removeLast() {
         if (size != 0) {
             T t;
-            int last = nextLast -1 ;
+            // 保证下标不会变成负数
+            int last =  (nextLast - 1 + items.length) % items.length;;
             t = items[last];
             // 删除
-            items[nextLast - 1] = null;
+            items[last] = null;
             // 指针前移
             nextLast = last;
-            size -=1 ;
+            size -= 1;
             // 检查数组是否需要缩容
             if (size > 0 && (double) size / items.length <= 0.25) {
                 resize();
