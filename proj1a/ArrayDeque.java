@@ -48,13 +48,17 @@ public class ArrayDeque<T> {
     public ArrayDeque() {
         items = (T[]) new Object[8]; // 使用泛型数组创建技巧
         size = 0;
-        nextFirst = items.length -1 ;
+        nextFirst = items.length -1 ; // 就是末尾，数组的末尾
         nextLast = 0;
     }
 
     //Adds an item of type T to the front of the deque.
     public void addFirst(T t) {
         if (size == items.length- 1) {
+// 常情况下，推荐使用 size == items.length - 1，原因如下：
+//  避免数组越界：在插入元素之前检查是否有空闲位置，可以避免数组越界的问题。
+// 简化逻辑：保持一个空闲位置可以简化指针的更新逻辑，减少出错的可能性。
+// 性能考虑：虽然每次插入时多检查一次条件，但这种开销相对于扩容操作来说是可以接受的。
             resize();
         }
 
@@ -204,7 +208,7 @@ front + index 计算出从 front 开始的第 index 个位置在数组中的相�
 
     private void resize() {
         // 扩容
-        if (size == items.length) {
+        if (size == items.length -1 ) {
             int newCapacity = items.length * 2;
             T[] newItems = (T[]) new Object[newCapacity];
 
