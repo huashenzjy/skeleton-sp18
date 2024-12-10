@@ -48,21 +48,21 @@ public class ArrayDeque<T> {
     public ArrayDeque() {
         items = (T[]) new Object[8]; // 使用泛型数组创建技巧
         size = 0;
-        nextFirst = items.length -1 ; // 就是末尾，数组的末尾
-        nextLast = 0;
+        nextFirst = 4;
+        nextLast = 5;
     }
 
     //Adds an item of type T to the front of the deque.
     public void addFirst(T t) {
-        if (size == items.length- 1) {
-// 常情况下，推荐使用 size == items.length - 1，原因如下：
-//  避免数组越界：在插入元素之前检查是否有空闲位置，可以避免数组越界的问题。
-// 简化逻辑：保持一个空闲位置可以简化指针的更新逻辑，减少出错的可能性。
-// 性能考虑：虽然每次插入时多检查一次条件，但这种开销相对于扩容操作来说是可以接受的。
-            resize();
-        }
-
+        //if (size == items.length) {
+        resize();
+        // }
         items[nextFirst] = t;
+        // 需要判断 nextFirst - 1，这个下标是否为正数
+        nextFirst = (nextFirst - 1 + items.length) % items.length;
+        // 如果是正数， 加上length也是本身，没有影响，负数则是循环到了 数组末尾
+
+
         // 只用下标便是指针
         // nextLast - 1 示意 为上一个位置
         // 进行取模运算 ，目的是将答案·框在 { 0 , item.length}之间
@@ -72,17 +72,15 @@ public class ArrayDeque<T> {
         如果 a 等于 b，则 a % b 等于 0。
         如果 a 大于 b，则 a % b 等于 a 减去 b 的最大整数倍后剩余的部分。
 */
-        // 需要判断 nextFirst - 1，这个下标是否为正数
-        nextFirst = (nextFirst - 1 + items.length) % items.length;
-        // 如果是正数， 加上length也是本身，没有影响，负数则是循环到了 数组末尾
+
         size += 1;
     }
 
     //      Adds an item of type T to the back of the deque.
     public void addLast(T t) {
-        if (size == items.length -1 ) {
-            resize(); // 在添加前调用， 保证有足够的空间，新数据可以放进去
-        }
+        //if (size == items.length) {
+        resize(); // 在添加前调用， 保证有足够的空间，新数据可以放进去
+
         items[nextLast] = t;
         // 只用下标便是指针
         // nextLast + 1 示意 为下一个位置
@@ -126,9 +124,9 @@ public class ArrayDeque<T> {
             nextFirst = front;
             size -= 1;
             // 检查数组是否需要缩容
-            if (size > 0 && (double) size / items.length <= 0.25) {
-                resize();
-            }
+            // if (size > 0 && (double) size / items.length <= 0.25) {
+            resize();
+            // }
             return item;
         }
         return null;
@@ -139,20 +137,16 @@ public class ArrayDeque<T> {
     // 意思就是删除队列的后端  并 返回
     public T removeLast() {
         if (size != 0) {
-            T t;
             // 保证下标不会变成负数
             int last = (nextLast - 1 + items.length) % items.length;
-            ;
-            t = items[last];
+            T t = t = items[last];
             // 删除
             items[last] = null;
             // 指针前移
-            nextLast = last;
+            nextLast = last; // nextLast 是指向下一个可插入位置的指针
             size -= 1;
             // 检查数组是否需要缩容
-            if (size > 0 && (double) size / items.length <= 0.25) {
-                resize();
-            }
+            resize();
             return t;
         }
         return null;
@@ -208,7 +202,7 @@ front + index 计算出从 front 开始的第 index 个位置在数组中的相�
 
     private void resize() {
         // 扩容
-        if (size == items.length -1 ) {
+        if (size >= items.length - 1) {
             int newCapacity = items.length * 2;
             T[] newItems = (T[]) new Object[newCapacity];
 
@@ -229,7 +223,8 @@ front + index 计算出从 front 开始的第 index 个位置在数组中的相�
         // 缩容
         // 将size 转为double 类型
         if (size > 0 && (double) size / items.length <= 0.25) {
-            int newCapacity = (int) (items.length * smallFactor);
+            int newCapacity = Math.max((int) (items.length * smallFactor), 8);
+            // 至少保持 8 的容量
             T[] newItems = (T[]) new Object[newCapacity];
 
             int startIndex = newCapacity / 4; // 开始的下标
