@@ -48,13 +48,13 @@ public class ArrayDeque<T> {
     public ArrayDeque() {
         items = (T[]) new Object[8]; // 使用泛型数组创建技巧
         size = 0;
-        nextFirst = 4;
-        nextLast = 5;
+        nextFirst = items.length -1 ;
+        nextLast = 0;
     }
 
     //Adds an item of type T to the front of the deque.
     public void addFirst(T t) {
-        if (size == items.length) {
+        if (size == items.length- 1) {
             resize();
         }
 
@@ -76,7 +76,7 @@ public class ArrayDeque<T> {
 
     //      Adds an item of type T to the back of the deque.
     public void addLast(T t) {
-        if (size == items.length) {
+        if (size == items.length -1 ) {
             resize(); // 在添加前调用， 保证有足够的空间，新数据可以放进去
         }
         items[nextLast] = t;
