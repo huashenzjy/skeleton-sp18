@@ -31,7 +31,7 @@ public class Palindrome {
         return false;
     }
 
-    public String help(String word) {
+    private String help(String word) {
         String original = word;
         ArrayDeque<Character> cd = (ArrayDeque) wordToDeque(word);
         String back = "";

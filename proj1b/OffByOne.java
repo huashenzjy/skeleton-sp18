@@ -12,7 +12,7 @@ public class OffByOne implements CharacterComparator {
     public boolean equalChars(char x, char y) {
         int i = x - y;
         i = Math.abs(i);
-        if (i == 1) {
+        if (i == 1 || i == 0) {
             return true;
         }
         return false;
