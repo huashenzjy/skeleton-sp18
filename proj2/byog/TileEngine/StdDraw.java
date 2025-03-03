@@ -1,4 +1,8 @@
+<<<<<<<< HEAD:proj2/byog/TileEngine/StdDraw.java
 package byog.TileEngine; /******************************************************************************
+========
+package byog.Core; /******************************************************************************
+>>>>>>>> origin/huashen:proj2/byog/Core/StdDraw.java
  *  Compilation:  javac byog.TileEngine.StdDraw.java
  *  Execution:    java byog.TileEngine.StdDraw
  *  Dependencies: none
