@@ -1,4 +1,4 @@
-package byog.lab6; /******************************************************************************
+package byog.Core; /******************************************************************************
  *  Compilation:  javac byog.TileEngine.StdDraw.java
  *  Execution:    java byog.TileEngine.StdDraw
  *  Dependencies: none
