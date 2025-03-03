@@ -2,6 +2,8 @@ package byog.Core;
 
 import byog.TileEngine.TETile;
 
+import java.util.Scanner;
+
 /** This is the main entry point for the program. This class simply parses
  *  the command line inputs, and lets the byog.Core.Game class take over
  *  in either keyboard or input string mode.
@@ -13,6 +15,9 @@ public class Main {
             System.exit(0);
         } else if (args.length == 1) {
             Game game = new Game();
+            Scanner scanner = new Scanner(System.in);
+         //   System.out.println("请输入种子");
+           // String inputString =  scanner.next();
             TETile[][] worldState = game.playWithInputString(args[0]);
             System.out.println(TETile.toString(worldState));
         } else {

@@ -1,9 +1,10 @@
 package byog.TileEngine;
 
-import edu.princeton.cs.introcs.StdDraw;
+//import edu.princeton.cs.introcs.byog.TileEngine.StdDraw;
 
-import java.awt.Color;
-import java.awt.Font;
+//import edu.princeton.cs.algs4.byog.TileEngine.StdDraw;
+
+import java.awt.*;
 
 /**
  * Utility class for rendering tiles. You do not need to modify this file. You're welcome
@@ -45,7 +46,7 @@ public class TERenderer {
     }
 
     /**
-     * Initializes StdDraw parameters and launches the StdDraw window. w and h are the
+     * Initializes byog.TileEngine.StdDraw parameters and launches the byog.TileEngine.StdDraw window. w and h are the
      * width and height of the world in number of tiles. If the TETile[][] array that you
      * pass to renderFrame is smaller than this, then extra blank space will be left
      * on the right and top edges of the frame. For example, if you select w = 60 and

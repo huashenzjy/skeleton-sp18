@@ -3,6 +3,8 @@ package byog.Core;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 
+import java.util.Random;
+
 public class Game {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
@@ -32,7 +34,10 @@ public class Game {
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
 
-        TETile[][] finalWorldFrame = null;
-        return finalWorldFrame;
+        //TETile[][] finalWorldFrame = null;
+        long seed = Long.parseLong(input);
+        Random RANDOM = new Random(seed);
+      //  TETile[][] world = worldInitialize();
+        return WorldGenerator.generateWorld(input);
     }
 }

@@ -1,9 +1,10 @@
 package byog.lab6;
 
-import edu.princeton.cs.introcs.StdDraw;
+//import edu.princeton.cs.introcs.StdDraw;
 
-import java.awt.Color;
-import java.awt.Font;
+import byog.TileEngine.StdDraw;
+
+import java.awt.*;
 import java.util.Random;
 
 public class MemoryGameSolution {
