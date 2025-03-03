@@ -109,7 +109,7 @@ public class WorldGenerator {
             }
         }
     }
-
+//1
     // 生成随机的迷宫
     private static void generateMaze(TETile[][] world, List<Room> rooms, Long seed, int sign) {
         List<Position> emptyArea = MapUtils.findEmptyArea(world, rooms);
